@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resource Pack Organizer</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1><img src="assets/header-icon.png" class="header-icon"> Resource Pack Organizer</h1>
+    <div class="topbar-actions">
+      <button id="btnAdd" class="btn btn-primary">+ Add package</button>
+      <button id="btnExport" class="btn">Export backup</button>
+      <button id="btnImport" class="btn">Import backup</button>
+      <input type="file" id="importFile" accept="application/json" hidden>
+    </div>
+  </header>
+
+  <nav id="floatingActions" class="floating-actions hidden" aria-label="Quick actions">
+    <button id="btnFloatingAdd" class="btn btn-primary" title="Add pack">+</button>
+    <button id="btnFloatingExport" class="btn" title="Export backup">↓</button>
+    <button id="btnFloatingImport" class="btn" title="Import backup">↑</button>
+    <button id="btnTop" class="btn" title="Go back to top">↑ Top</button>
+  </nav>
+
+  <main class="columns">
+    <section class="column">
+      <h2>Available</h2>
+      <div id="availableList" class="pack-list" data-column="available"></div>
+    </section>
+
+    <section class="column column-active">
+      <h2>Selected</h2>
+      <div id="activeList" class="pack-list" data-column="selected"></div>
+    </section>
+  </main>
+
+  <p class="empty-hint" id="emptyHint">No resource package registered yet. Click "Add package" to get started.</p>
+
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <h2 id="modalTitle">New Resource Pack</h2>
+
+      <div class="modal-body">
+        <div class="cover-section">
+          <label>Icon</label>
+          <div class="cover-main">
+            <img id="coverPreview" src="assets/placeholder.svg" alt="Capa do pack">
+            <div class="cover-main-actions">
+              <label class="btn btn-small file-btn">Choose local image file
+                <input type="file" id="coverInput" accept="image/*" hidden>
+              </label>
+              <button type="button" id="btnRemoveCover" class="btn btn-small">Remove icon</button>
+            </div>
+          </div>
+
+          <div class="cover-url-row">
+            <input type="url" id="coverUrlInput" placeholder="Or enter a valid URL image...">
+            <button type="button" id="btnUseCoverUrl" class="btn btn-small">Enter URL</button>
+          </div>
+
+          <button type="button" id="btnChooseTemplate" class="btn btn-small btn-block">Choose template</button>
+
+          <div id="templatePicker" class="template-picker hidden">
+            <div id="templateGrid" class="template-grid"></div>
+          </div>
+        </div>
+
+        <div class="title-editor">
+          <label>Title <span class="hint">(§ formatting supported)</span></label>
+          <div class="rich-editor title-editor-box">
+            <div id="titlePreview" class="editor-preview" aria-hidden="true"></div>
+            <textarea id="titleInput" class="title-input editor-input" rows="1" maxlength="80" spellcheck="false" data-rich-editable></textarea>
+            <span id="titleCounter" class="character-counter" aria-live="polite">0/80</span>
+          </div>
+        </div>
+
+        <div class="description-field">
+          <label>Description <span class="hint">(§ formatting supported)</span></label>
+          <div class="rich-editor description-editor-box">
+            <div id="descriptionPreview" class="editor-preview" aria-hidden="true"></div>
+            <textarea id="descriptionInput" class="description-input editor-input" rows="3" maxlength="500" spellcheck="false" data-rich-editable></textarea>
+            <span id="descriptionCounter" class="character-counter" aria-live="polite">0/500</span>
+          </div>
+        </div>
+
+        <label class="checkbox-field">
+          <input type="checkbox" id="incompatibleInput">
+          Mark as texture with incompatible version
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btnCancel" class="btn">Cancel</button>
+        <button id="btnSave" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmOverlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="confirm-modal">
+      <h2 id="confirmTitle">Remove resource pack?</h2>
+      <p id="confirmMessage">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button id="btnConfirmCancel" class="btn">Cancel</button>
+        <button id="btnConfirmRemove" class="btn btn-danger">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="richToolbar" class="rich-toolbar hidden">
+    <button type="button" class="toolbar-btn" data-cmd="bold"><b>B</b></button>
+    <button type="button" class="toolbar-btn" data-cmd="italic"><i>I</i></button>
+    <button type="button" class="toolbar-btn" data-cmd="underline"><u>U</u></button>
+    <button type="button" class="toolbar-btn" data-cmd="strikeThrough"><s>S</s></button>
+    <button type="button" class="toolbar-btn" data-cmd="obfuscated">?</button>
+    <button type="button" class="toolbar-btn" data-cmd="removeFormat">R</button>
+    <span class="toolbar-sep"></span>
+    <div id="toolbarSwatches" class="toolbar-swatches"></div>
+    <input type="color" id="toolbarCustomColor" title="Custom hex color">
+  </div>
+
+  <script src="js/db.js"></script>
+  <script src="js/richtext.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
